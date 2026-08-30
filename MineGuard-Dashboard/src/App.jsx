@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import roverVehicle from './assets/rover-vehicle.svg';
+import { mockCameraFeeds } from './data/mockData';
 import {
   Activity,
   AlertTriangle,
@@ -61,6 +62,9 @@ function Dashboard() {
     TEMPERATURE: [28.2, 28.5, 28.8, 29.1, 29.4, 29.7, 30.1, 30.4, 30.8, 31.1, 31.5, 31.8, 32.1, 32.4, 32.2, 32.0, 31.8, 31.5, 31.2, 30.9, 30.6, 30.3, 30.0, 29.7],
     RESPIRABLE: [2.1, 2.3, 2.4, 2.6, 2.8, 3.0, 3.2, 3.3, 3.5, 3.6, 3.5, 3.4, 3.5, 3.6, 3.7, 3.8, 3.7, 3.6, 3.5, 3.4, 3.5, 3.6, 3.7, 3.8],
   });
+  const [cameraFeeds, setCameraFeeds] = useState(mockCameraFeeds);
+  const [selectedCameraId, setSelectedCameraId] = useState(mockCameraFeeds[0]?.id ?? 1);
+  const selectedCamera = cameraFeeds.find((camera) => camera.id === selectedCameraId) ?? cameraFeeds[0];
   const [alerts, setAlerts] = useState([
     { type: 'critical', title: 'High Gas Concentration Detected', location: 'Zone B, Tunnel 2', time: '04:34 PM' },
     { type: 'warning', title: 'Humidity Above Threshold', location: 'Tunnel C, Zone 1', time: '04:32 PM' },
@@ -971,10 +975,77 @@ function Dashboard() {
                           <h2 className="text-[12px] font-bold uppercase tracking-[0.18em] text-slate-200">Camera Feed</h2>
                           <div className="inline-flex items-center gap-2 rounded-full border border-red-400/30 bg-red-500/10 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-red-300"><span className="h-1.5 w-1.5 rounded-full bg-red-400 data-pulse" /> LIVE</div>
                         </div>
-                        <div className="scanline relative h-[420px] overflow-hidden rounded-xl border border-slate-800 bg-[radial-gradient(circle_at_center,_rgba(94,234,212,0.25),_rgba(15,23,42,0.8)_42%,_rgba(2,6,23,0.98)_100%)]">
-                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(148,163,184,0.12),_transparent_28%)]" />
-                          <div className="absolute inset-x-6 bottom-5 h-20 rounded-[50%] bg-slate-900/70 blur-2xl" />
-                          <div className="absolute bottom-3 left-3 text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-200">ROVER CAMERA</div>
+
+                        <div className="grid gap-4 xl:grid-cols-[1.7fr_0.9fr]">
+                          <div className="relative h-[420px] overflow-hidden rounded-2xl border border-slate-800 bg-[#030b12] shadow-[inset_0_0_30px_rgba(34,211,238,0.08),0_0_25px_rgba(14,116,144,0.25)]">
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(34,211,238,0.13),_rgba(2,6,23,0.9)_38%,_rgba(2,6,23,1)_100%)]" />
+                            <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(148,163,184,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.06)_1px,transparent_1px)] [background-size:32px_32px]" />
+                            <div className="absolute inset-[6%] rounded-2xl border border-cyan-400/15 bg-slate-950/20" />
+                            <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20" />
+                            <div className="absolute left-1/2 top-1/2 h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20" />
+                            <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-cyan-300/60 to-transparent" />
+                            <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
+
+                            <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-cyan-400/30 bg-slate-950/75 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-cyan-200">
+                              <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" /> LIVE
+                            </div>
+
+                            <div className="absolute right-4 top-4 z-10 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-emerald-300">
+                              {selectedCamera.status}
+                            </div>
+
+                            <div className="absolute left-5 right-5 top-5 z-10 flex items-center justify-between text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                              <span>{selectedCamera.name}</span>
+                              <span className="text-cyan-300">HD / 30 FPS</span>
+                            </div>
+
+                            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
+                            <div className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/35 bg-cyan-500/5 shadow-[0_0_40px_rgba(34,211,238,0.18)]" />
+                            <div className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-300/35 bg-emerald-500/8" />
+                            <div className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-md border border-cyan-400/30 bg-cyan-400/5" />
+
+                            <div className="absolute inset-x-5 bottom-5 z-10 flex items-center justify-between rounded-xl border border-slate-700 bg-slate-950/70 px-3 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-slate-200">
+                              <span>ROVER CAMERA</span>
+                              <span className={` ${selectedCamera.active ? 'text-emerald-300' : 'text-amber-300'}`}>
+                                {selectedCamera.active ? 'STREAMING' : 'STANDBY'}
+                              </span>
+                            </div>
+
+                            <div className="absolute inset-0 animate-pulse bg-[linear-gradient(to_bottom,transparent_0%,rgba(148,163,184,0.06)_40%,transparent_100%)]" style={{ backgroundSize: '100% 12px' }} />
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
+                              <div className="mb-3 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400">Camera Selection</div>
+                              <div className="space-y-2">
+                                {cameraFeeds.map((camera) => (
+                                  <button
+                                    type="button"
+                                    key={camera.id}
+                                    onClick={() => setSelectedCameraId(camera.id)}
+                                    className={`flex w-full items-center justify-between rounded-xl border px-3 py-2 text-left text-[11px] transition ${
+                                      selectedCamera.id === camera.id
+                                        ? 'border-cyan-400/60 bg-cyan-500/10 text-cyan-100'
+                                        : 'border-slate-700 bg-slate-900/70 text-slate-300 hover:border-slate-500'
+                                    }`}
+                                  >
+                                    <span>{camera.name}</span>
+                                    <span className={`h-2.5 w-2.5 rounded-full ${camera.active ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]' : 'bg-slate-500'}`} />
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
+                              <div className="mb-3 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400">System Feed</div>
+                              <div className="space-y-3 text-[10px] uppercase tracking-[0.12em] text-slate-300">
+                                <div className="flex items-center justify-between"><span>Signal</span><span className="text-emerald-300">96%</span></div>
+                                <div className="flex items-center justify-between"><span>Tracking</span><span className="text-cyan-300">Auto</span></div>
+                                <div className="flex items-center justify-between"><span>Resolution</span><span>1080p</span></div>
+                                <div className="flex items-center justify-between"><span>Latency</span><span>42 ms</span></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
