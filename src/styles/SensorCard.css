@@ -1,0 +1,155 @@
+/* Sensor Card Styles */
+.sensor-card {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+  border: 2px solid #555;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.sensor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
+.sensor-card.sensor-normal {
+  border-color: #00dd00;
+  box-shadow: 0 0 15px rgba(0, 221, 0, 0.2);
+}
+
+.sensor-card.sensor-warning {
+  border-color: #ffaa00;
+  box-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
+}
+
+.sensor-card.sensor-critical {
+  border-color: #ff3333;
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+  animation: border-pulse 1s infinite;
+}
+
+@keyframes border-pulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(255, 51, 51, 0.6); }
+}
+
+.sensor-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.sensor-icon {
+  font-size: 1.8rem;
+}
+
+.sensor-info {
+  flex: 1;
+}
+
+.sensor-label {
+  margin: 0;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.sensor-unit {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.sensor-value {
+  display: flex;
+  justify-content: center;
+  padding: 0.8rem 0;
+}
+
+.value-number {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #ffff00;
+  text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+}
+
+.sensor-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sensor-bar-background {
+  width: 100%;
+  height: 12px;
+  background: #333;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #555;
+}
+
+.sensor-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00dd00 0%, #ffaa00 50%, #ff3333 100%);
+  transition: width 0.5s ease;
+}
+
+.sensor-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.sensor-thresholds {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.threshold {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.warning-threshold {
+  color: #ffaa00;
+  border-left: 3px solid #ffaa00;
+}
+
+.critical-threshold {
+  color: #ff3333;
+  border-left: 3px solid #ff3333;
+}
+
+.sensor-status {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sensor-status.normal {
+  color: #00dd00;
+}
+
+.sensor-status.warning {
+  color: #ffaa00;
+}
+
+.sensor-status.critical {
+  color: #ff3333;
+  animation: pulse-text 1s infinite;
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}

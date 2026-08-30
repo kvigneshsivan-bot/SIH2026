@@ -1,0 +1,139 @@
+/* Status Card Styles */
+.status-card {
+  background: linear-gradient(180deg, rgba(25, 29, 33, 0.96), rgba(17, 20, 25, 0.98));
+  border: 1px solid rgba(255, 166, 0, 0.24);
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px rgba(255, 166, 0, 0.04);
+}
+
+.status-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 191, 105, 0.5);
+}
+
+.status-card.status-safe {
+  border-color: rgba(76, 175, 80, 0.8);
+  background: linear-gradient(180deg, rgba(17, 31, 22, 0.9), rgba(14, 24, 18, 0.9));
+}
+
+.status-card.status-warning {
+  border-color: rgba(255, 166, 0, 0.8);
+  background: linear-gradient(180deg, rgba(40, 28, 10, 0.9), rgba(28, 21, 12, 0.9));
+}
+
+.status-card.status-critical {
+  border-color: rgba(255, 80, 80, 0.8);
+  background: linear-gradient(180deg, rgba(43, 19, 19, 0.9), rgba(30, 15, 15, 0.9));
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.card-title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.card-icon {
+  font-size: 1.4rem;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ebf1f7;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-badge {
+  padding: 0.28rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(255, 166, 0, 0.1);
+  color: #ffbf69;
+  border: 1px solid rgba(255, 166, 0, 0.4);
+}
+
+.status-badge.status-safe {
+  background: rgba(76, 175, 80, 0.12);
+  color: #8ee58f;
+  border-color: rgba(76, 175, 80, 0.6);
+}
+
+.status-badge.status-warning {
+  background: rgba(255, 166, 0, 0.12);
+  color: #ffbf69;
+  border-color: rgba(255, 166, 0, 0.5);
+}
+
+.status-badge.status-critical {
+  background: rgba(255, 80, 80, 0.12);
+  color: #ff9a9a;
+  border-color: rgba(255, 80, 80, 0.6);
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-value {
+  text-align: center;
+}
+
+.value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #f6d365;
+  line-height: 1.1;
+}
+
+.unit {
+  display: block;
+  font-size: 0.7rem;
+  color: #a5afba;
+  margin-top: 0.3rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.72rem;
+  color: #bdc7d2;
+}
+
+.detail-value {
+  color: #f4f7fb;
+  font-weight: 700;
+}
