@@ -1,0 +1,89 @@
+/* App Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #05070a;
+}
+
+.app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #05070a 0%, #0a0d13 100%);
+  color: #eef4ff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app header {
+  flex-shrink: 0;
+  height: auto;
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.main-layout > aside {
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #081219 0%, #0b1620 100%);
+}
+
+.main-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff9f1c, #ffbf69);
+  border-radius: 6px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #ffc857;
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
+  }
+
+  .main-layout > aside {
+    flex-shrink: 0;
+    height: auto;
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 166, 0, 0.7);
+  }
+
+  .main-content {
+    flex: 1;
+    overflow-x: hidden;
+  }
+}

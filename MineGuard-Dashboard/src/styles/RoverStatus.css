@@ -1,0 +1,308 @@
+/* Rover Status Styles */
+.rover-status-container {
+  background: #0a0a0a;
+  border: 2px solid #ffa500;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.2);
+}
+
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-header h2 {
+  margin: 0;
+  color: #ffff00;
+  font-size: 1.3rem;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.status-panel {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 2px solid #555;
+  transition: all 0.3s ease;
+}
+
+.status-panel:hover {
+  border-color: #ffa500;
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+}
+
+.status-panel.battery-high {
+  border-color: #00dd00;
+}
+
+.status-panel.battery-medium {
+  border-color: #ffaa00;
+}
+
+.status-panel.battery-low {
+  border-color: #ff3333;
+  animation: border-pulse 1s infinite;
+}
+
+.status-panel.signal-strong {
+  border-color: #00dd00;
+}
+
+.status-panel.signal-good {
+  border-color: #00dd00;
+}
+
+.status-panel.signal-fair {
+  border-color: #ffaa00;
+}
+
+.status-panel.signal-weak {
+  border-color: #ff3333;
+}
+
+.panel-icon {
+  display: flex;
+  align-items: flex-start;
+  color: #ffa500;
+  min-width: 40px;
+}
+
+.panel-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.panel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.panel-content h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.battery-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.battery-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffff00;
+}
+
+.battery-bar {
+  width: 100%;
+  height: 16px;
+  background: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #555;
+}
+
+.battery-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff3333 0%, #ffaa00 50%, #00dd00 100%);
+  transition: width 0.5s ease;
+}
+
+.panel-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.motor-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-value.operational {
+  color: #00dd00;
+  font-weight: bold;
+  background: rgba(0, 221, 0, 0.2);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+.motor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.motor-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.motor-item .label {
+  color: #aaa;
+}
+
+.motor-item .value {
+  color: #00dd00;
+  font-weight: bold;
+}
+
+.speed-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+}
+
+.speed-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffff00;
+}
+
+.speed-unit {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.location-value {
+  color: #ffff00;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.signal-bars {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 6px;
+  height: 6px;
+  background: #666;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.bar.active {
+  background: #00dd00;
+  box-shadow: 0 0 8px rgba(0, 221, 0, 0.5);
+}
+
+.bar:nth-child(1).active { height: 6px; }
+.bar:nth-child(2).active { height: 10px; }
+.bar:nth-child(3).active { height: 14px; }
+.bar:nth-child(4).active { height: 18px; }
+
+.mission-times {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.time-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.time-item .label {
+  color: #aaa;
+}
+
+.time-item .value {
+  color: #fff;
+  font-weight: bold;
+}
+
+.rover-diagnostics {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-top: 2px solid #ffa500;
+}
+
+.rover-diagnostics h3 {
+  margin: 0 0 1rem 0;
+  color: #ffff00;
+  font-size: 1rem;
+}
+
+.diagnostic-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.diagnostic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  border-left: 3px solid #555;
+  font-size: 0.9rem;
+}
+
+.diagnostic-item:hover {
+  border-left-color: #ffa500;
+}
+
+.diagnostic-label {
+  color: #aaa;
+}
+
+.diagnostic-status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.diagnostic-status.ok {
+  background: rgba(0, 221, 0, 0.2);
+  color: #00dd00;
+  border: 1px solid #00dd00;
+}
+
+@media (max-width: 1024px) {
+  .status-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-panel {
+    flex-direction: column;
+  }
+
+  .panel-icon {
+    justify-content: center;
+  }
+}
