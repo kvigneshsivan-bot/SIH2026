@@ -73,17 +73,20 @@ body {
 @media (max-width: 768px) {
   .main-layout {
     flex-direction: column;
+    overflow-y: auto;
   }
 
   .main-layout > aside {
     flex-shrink: 0;
+    width: 100%;
     height: auto;
     border-right: none;
-    border-bottom: 2px solid rgba(255, 166, 0, 0.7);
+    border-bottom: 1px solid rgba(70, 142, 185, 0.35);
   }
 
   .main-content {
     flex: 1;
     overflow-x: hidden;
+    min-height: 0;
   }
 }

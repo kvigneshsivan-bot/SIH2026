@@ -104,33 +104,84 @@
   .sidebar {
     width: 100%;
     height: auto;
+    min-height: 100vh;
+    padding: 1.05rem 0.9rem 1rem;
     border-right: none;
-    border-bottom: 1px solid rgba(255, 166, 0, 0.3);
+    border-bottom: 1px solid rgba(75, 174, 215, 0.3);
+    background: linear-gradient(180deg, #071521 0%, #0c1c2a 100%);
   }
 
   .sidebar-brand {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.35rem 0.5rem 0.9rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .brand-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: rgba(72, 214, 255, 0.08);
+    border: 1px solid rgba(72, 214, 255, 0.35);
+    box-shadow: inset 0 0 10px rgba(72, 214, 255, 0.08);
+    font-size: 1.35rem;
+  }
+
+  .brand-block {
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+    line-height: 1.08;
   }
 
   .sidebar-nav {
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding-top: 0.1rem;
   }
 
   .nav-item {
-    min-width: 120px;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0.35rem;
+    width: 100%;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 0.9rem;
+    padding: 0.8rem 0.9rem;
+    min-height: 52px;
+    border-radius: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #dfeaf7;
+  }
+
+  .nav-item svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active {
+    background: linear-gradient(90deg, rgba(72, 214, 255, 0.14), rgba(16, 137, 176, 0.05));
+    border-color: rgba(72, 214, 255, 0.35);
+    color: #e9faff;
+    box-shadow: inset 0 0 18px rgba(72, 214, 255, 0.08);
   }
 
   .nav-label {
-    text-align: center;
-    font-size: 0.68rem;
+    text-align: left;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
   }
 
   .sidebar-footer {
-    display: none;
+    display: flex;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    color: #b9d3eb;
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
   }
 }

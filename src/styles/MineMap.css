@@ -71,6 +71,30 @@
 .person-sos-action { display: flex; align-items: center; justify-content: center; gap: 3px; width: 100%; margin-top: 7px; padding: 4px; border: 1px solid rgba(248, 113, 113, 0.32); border-radius: 4px; background: rgba(239, 68, 68, 0.1); color: #fca5a5; font-size: 7px; font-weight: 800; }
 @keyframes sos-pulse { 50% { transform: scale(1.35); opacity: 0.35; } }
 
+@media (max-width: 640px) {
+  .dashboard-person-map { min-height: 820px; border-radius: 8px; }
+  .dashboard-map-layer { height: 300px; }
+  .dashboard-tunnel-label { top: 12px; left: 12px; max-width: 190px; font-size: 8px; line-height: 1.4; }
+  .dashboard-map-legend { gap: 7px 12px; margin-bottom: 8px; font-size: 6px; }
+  .dashboard-map-summary { right: 8px; bottom: 8px; left: 8px; justify-content: space-between; gap: 5px; padding: 6px; font-size: 6px; }
+  .dashboard-person-details { top: 316px; left: 8px; right: 8px; }
+  .dashboard-details-heading { margin-bottom: 7px; font-size: 8px; }
+  .dashboard-person-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .dashboard-person-card { padding: 7px; }
+  .dashboard-person-card > span:first-child, .dashboard-person-card > span:first-child em { font-size: 6px; }
+  .dashboard-person-card b { font-size: 8px; }
+  .dashboard-person-card small { font-size: 6px; }
+  .person-sos-action { font-size: 6px; }
+  .map-zone-card { transform: scale(0.85); transform-origin: center; }
+}
+
+@media (max-width: 380px) {
+  .dashboard-person-map { min-height: 870px; }
+  .dashboard-map-layer { height: 285px; }
+  .dashboard-person-details { top: 300px; }
+  .dashboard-person-grid { grid-template-columns: 1fr; }
+}
+
 .mine-map-container {
   background: #0a0a0a;
   border: 2px solid #ffa500;
