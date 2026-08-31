@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import roverVehicle from './assets/rover-vehicle.svg';
-import { mockCameraFeeds } from './data/mockData';
+import { mockCameraFeeds, mockPersonnelData, mockMineMap } from './data/mockData';
+import MineMap from './components/MineMap';
 import {
   Activity,
   AlertTriangle,
@@ -47,6 +48,8 @@ const initialDispatchLog = [
   { id: 3, label: 'Service Center', status: 'Queued', message: 'Maintenance team on standby' },
 ];
 
+const officialsPhone = import.meta.env.VITE_OFFICIALS_PHONE || '+15550100';
+
 function Dashboard() {
   const [now, setNow] = useState(new Date());
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -54,6 +57,12 @@ function Dashboard() {
   const [sosTriggered, setSosTriggered] = useState(false);
   const [dispatchLog, setDispatchLog] = useState(initialDispatchLog);
   const [selectedGasTab, setSelectedGasTab] = useState('METHANE');
+  const [personnelData, setPersonnelData] = useState(mockPersonnelData);
+  const [dashboardPeople, setDashboardPeople] = useState([
+    ['P-01', 'Ajay Kumar', 'Tunnel A - North Face', '18%', '32%'], ['P-02', 'Ramesh Singh', 'Tunnel B - East Branch', '68%', '24%'], ['P-03', 'Vikram Patel', 'Tunnel C - Main Drift', '43%', '68%'],
+    ['P-04', 'Sunil Nair', 'Tunnel A - West Cut', '79%', '70%'], ['P-05', 'Deepak Sharma', 'Tunnel B - Lower Face', '27%', '78%'], ['P-06', 'Mohan Gupta', 'Tunnel C - Crosscut', '56%', '43%'],
+  ].map(([id, name, location, left, top]) => ({ id, name, location, status: 'safe', position: { left, top } })));
+  const [mapData] = useState(mockMineMap);
   const [liveGasData, setLiveGasData] = useState({
     METHANE: [2.28, 2.3, 2.34, 2.31, 2.29, 2.33, 2.35, 2.36, 2.38, 2.34, 2.32, 2.36, 2.4, 2.39, 2.35, 2.31, 2.27, 2.29, 2.34, 2.38, 2.37, 2.35, 2.33, 2.36],
     CARBON: [38, 40, 42, 41, 43, 45, 44, 46, 47, 45, 44, 46, 48, 47, 46, 44, 42, 43, 45, 46, 45, 44, 43, 45],
@@ -121,6 +130,27 @@ function Dashboard() {
         return item;
       })
     );
+  };
+
+  const handleDashboardPersonSos = (personId) => {
+    const person = dashboardPeople.find((item) => item.id === personId);
+    if (!person) return;
+
+    const timeLabel = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    setDashboardPeople((current) => current.map((item) => (
+      item.id === personId ? { ...item, status: 'sos' } : item
+    )));
+    setAlerts((current) => [
+      { type: 'critical', title: `SOS: ${person.name}`, location: person.location, time: timeLabel },
+      ...current.slice(0, 2),
+    ]);
+    setDispatchLog((current) => current.map((item) => ({
+      ...item,
+      status: 'Sent',
+      message: item.id === 1 ? `SMS sent for ${person.id} to emergency control` : `SOS dispatch active near ${person.location}`,
+    })));
+
+    window.location.href = `sms:${officialsPhone}?body=${encodeURIComponent(`MINEGUARD SOS - ${person.name} (${person.id}) needs immediate assistance at ${person.location}. Time: ${timeLabel}`)}`;
   };
 
   const [metrics, setMetrics] = useState([
@@ -504,7 +534,7 @@ function Dashboard() {
                             <div className="flex items-center gap-2">
                               <div className="text-right">
                                 <div className="text-[8px] uppercase tracking-[0.12em] text-slate-400">DETECTED</div>
-                                <div className="text-[18px] font-bold text-amber-300">18</div>
+                                <div className="text-[18px] font-bold text-amber-300">6</div>
                               </div>
                               <div className="flex items-center gap-1">
                                 <button onClick={() => handleMapZoom('out')} className="flex h-6 w-6 items-center justify-center rounded border border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700" type="button"><Minus size={12} /></button>
@@ -514,133 +544,13 @@ function Dashboard() {
                             </div>
                           </div>
 
-                          <div className="relative h-[310px] overflow-hidden rounded-xl border border-slate-800 bg-[#0a1420]">
-                            <div className="absolute inset-0 transition-transform duration-300 ease-out" style={{ transform: `scale(${mapZoom})`, transformOrigin: 'center center' }}>
-                              <svg className="h-full w-full" viewBox="0 0 920 310" preserveAspectRatio="xMidYMid slice">
-                                <defs>
-                                  <filter id="tunnel-glow">
-                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                    <feMerge>
-                                      <feMergeNode in="coloredBlur"/>
-                                      <feMergeNode in="SourceGraphic"/>
-                                    </feMerge>
-                                  </filter>
-                                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(96, 119, 140, 0.10)" strokeWidth="0.6"/>
-                                  </pattern>
-                                </defs>
-
-                                <rect width="920" height="310" fill="url(#grid)" />
-
-                                <g>
-                                  <path d="M 20 75 L 900 75 L 900 90 L 20 90 Z" fill="rgba(147, 197, 253, 0.10)"/>
-                                  <path d="M 30 75 L 890 75" stroke="rgba(17, 24, 39, 0.9)" strokeWidth="34" strokeLinecap="round"/>
-                                  <path d="M 30 75 L 890 75" stroke="rgba(121, 162, 201, 0.85)" strokeWidth="18" strokeLinecap="round"/>
-                                  <path d="M 30 75 L 890 75" stroke="rgba(191, 219, 254, 0.35)" strokeWidth="7" strokeLinecap="round"/>
-
-                                  <path d="M 20 150 L 900 150 L 900 165 L 20 165 Z" fill="rgba(147, 197, 253, 0.08)"/>
-                                  <path d="M 30 150 L 890 150" stroke="rgba(15, 23, 42, 0.95)" strokeWidth="34" strokeLinecap="round"/>
-                                  <path d="M 30 150 L 890 150" stroke="rgba(121, 162, 201, 0.85)" strokeWidth="18" strokeLinecap="round"/>
-                                  <path d="M 30 150 L 890 150" stroke="rgba(191, 219, 254, 0.35)" strokeWidth="7" strokeLinecap="round"/>
-
-                                  <path d="M 20 225 L 900 225 L 900 240 L 20 240 Z" fill="rgba(147, 197, 253, 0.08)"/>
-                                  <path d="M 30 225 L 890 225" stroke="rgba(15, 23, 42, 0.95)" strokeWidth="34" strokeLinecap="round"/>
-                                  <path d="M 30 225 L 890 225" stroke="rgba(121, 162, 201, 0.85)" strokeWidth="18" strokeLinecap="round"/>
-                                  <path d="M 30 225 L 890 225" stroke="rgba(191, 219, 254, 0.35)" strokeWidth="7" strokeLinecap="round"/>
-                                </g>
-
-                                <g>
-                                  <path d="M 140 30 L 140 280" stroke="rgba(15, 23, 42, 0.9)" strokeWidth="30" strokeLinecap="round"/>
-                                  <path d="M 140 30 L 140 280" stroke="rgba(121, 162, 201, 0.82)" strokeWidth="16" strokeLinecap="round"/>
-                                  <path d="M 140 30 L 140 280" stroke="rgba(191, 219, 254, 0.25)" strokeWidth="6" strokeLinecap="round"/>
-
-                                  <path d="M 320 35 L 320 290" stroke="rgba(15, 23, 42, 0.9)" strokeWidth="34" strokeLinecap="round"/>
-                                  <path d="M 320 35 L 320 290" stroke="rgba(121, 162, 201, 0.82)" strokeWidth="18" strokeLinecap="round"/>
-                                  <path d="M 320 35 L 320 290" stroke="rgba(191, 219, 254, 0.25)" strokeWidth="7" strokeLinecap="round"/>
-
-                                  <path d="M 460 20 L 460 295" stroke="rgba(15, 23, 42, 0.95)" strokeWidth="38" strokeLinecap="round"/>
-                                  <path d="M 460 20 L 460 295" stroke="rgba(121, 162, 201, 0.86)" strokeWidth="20" strokeLinecap="round"/>
-                                  <path d="M 460 20 L 460 295" stroke="rgba(191, 219, 254, 0.28)" strokeWidth="8" strokeLinecap="round"/>
-
-                                  <path d="M 640 35 L 640 290" stroke="rgba(15, 23, 42, 0.9)" strokeWidth="34" strokeLinecap="round"/>
-                                  <path d="M 640 35 L 640 290" stroke="rgba(121, 162, 201, 0.82)" strokeWidth="18" strokeLinecap="round"/>
-                                  <path d="M 640 35 L 640 290" stroke="rgba(191, 219, 254, 0.25)" strokeWidth="7" strokeLinecap="round"/>
-
-                                  <path d="M 780 35 L 780 275" stroke="rgba(15, 23, 42, 0.88)" strokeWidth="26" strokeLinecap="round"/>
-                                  <path d="M 780 35 L 780 275" stroke="rgba(121, 162, 201, 0.8)" strokeWidth="14" strokeLinecap="round"/>
-                                  <path d="M 780 35 L 780 275" stroke="rgba(191, 219, 254, 0.22)" strokeWidth="5" strokeLinecap="round"/>
-                                </g>
-
-                                <g>
-                                  <path d="M 140 75 L 320 150" stroke="rgba(15, 23, 42, 0.9)" strokeWidth="28" strokeLinecap="round" fill="none"/>
-                                  <path d="M 140 75 L 320 150" stroke="rgba(121, 162, 201, 0.80)" strokeWidth="15" strokeLinecap="round" fill="none"/>
-                                  <path d="M 140 75 L 320 150" stroke="rgba(191, 219, 254, 0.24)" strokeWidth="5" strokeLinecap="round" fill="none"/>
-
-                                  <path d="M 640 150 L 780 75" stroke="rgba(15, 23, 42, 0.9)" strokeWidth="28" strokeLinecap="round" fill="none"/>
-                                  <path d="M 640 150 L 780 75" stroke="rgba(121, 162, 201, 0.80)" strokeWidth="15" strokeLinecap="round" fill="none"/>
-                                  <path d="M 640 150 L 780 75" stroke="rgba(191, 219, 254, 0.24)" strokeWidth="5" strokeLinecap="round" fill="none"/>
-
-                                  <path d="M 320 225 L 460 150" stroke="rgba(15, 23, 42, 0.9)" strokeWidth="28" strokeLinecap="round" fill="none"/>
-                                  <path d="M 320 225 L 460 150" stroke="rgba(121, 162, 201, 0.80)" strokeWidth="15" strokeLinecap="round" fill="none"/>
-                                  <path d="M 320 225 L 460 150" stroke="rgba(191, 219, 254, 0.24)" strokeWidth="5" strokeLinecap="round" fill="none"/>
-                                </g>
-
-                                <g>
-                                  <circle cx="140" cy="75" r="24" fill="rgba(2, 6, 23, 0.9)" stroke="rgba(148, 163, 184, 0.4)" strokeWidth="2" />
-                                  <circle cx="320" cy="150" r="18" fill="rgba(2, 6, 23, 0.9)" stroke="rgba(148, 163, 184, 0.35)" strokeWidth="2"/>
-                                  <circle cx="460" cy="150" r="22" fill="rgba(2, 6, 23, 0.9)" stroke="rgba(148, 163, 184, 0.45)" strokeWidth="2"/>
-                                  <circle cx="640" cy="150" r="18" fill="rgba(2, 6, 23, 0.9)" stroke="rgba(148, 163, 184, 0.35)" strokeWidth="2"/>
-                                </g>
-
-                                <text x="130" y="50" fontSize="11" fill="rgba(148,163,184,0.92)" fontWeight="700" letterSpacing="1.5">North Gallery</text>
-                                <text x="515" y="44" fontSize="11" fill="rgba(148,163,184,0.92)" fontWeight="700" letterSpacing="1.5">East Conveyor Drift</text>
-                                <text x="260" y="128" fontSize="11" fill="rgba(148,163,184,0.92)" fontWeight="700" letterSpacing="1.5">Longwall Face A</text>
-                                <text x="390" y="212" fontSize="11" fill="rgba(148,163,184,0.92)" fontWeight="700" letterSpacing="1.5">Deep Development Heading</text>
-                                <text x="545" y="273" fontSize="11" fill="rgba(148,163,184,0.92)" fontWeight="700" letterSpacing="1.5">Sump &amp; Pump House</text>
-                                <text x="60" y="296" fontSize="10" fill="rgba(125,211,252,0.95)" fontWeight="600">RV-07</text>
-
-                                <g>
-                                  <circle cx="280" cy="75" r="5.5" fill="#22c55e" />
-                                  <circle cx="310" cy="94" r="5.5" fill="#22c55e" />
-                                  <circle cx="355" cy="150" r="5.5" fill="#22c55e" />
-                                  <circle cx="390" cy="168" r="5.5" fill="#22c55e" />
-                                  <circle cx="568" cy="77" r="5.5" fill="#22c55e" />
-                                  <circle cx="598" cy="96" r="5.5" fill="#22c55e" />
-                                  <circle cx="620" cy="228" r="5.5" fill="#22c55e" />
-                                  <circle cx="640" cy="212" r="5.5" fill="#22c55e" />
-                                </g>
-
-                                <g>
-                                  <circle cx="460" cy="58" r="6" fill="#ef4444"/>
-                                  <circle cx="510" cy="72" r="6" fill="#ef4444"/>
-                                  <circle cx="410" cy="232" r="6" fill="#ef4444"/>
-                                  <circle cx="520" cy="150" r="6" fill="#ef4444"/>
-                                  <circle cx="478" cy="245" r="6" fill="#ef4444"/>
-                                  <circle cx="720" cy="228" r="6" fill="#ef4444"/>
-                                </g>
-
-                                <g>
-                                  <circle cx="80" cy="294" r="7" fill="#06b6d4" />
-                                  <circle cx="80" cy="294" r="14" fill="rgba(6, 182, 212, 0.18)"/>
-                                </g>
-                              </svg>
-                            </div>
-
-                            <div className="absolute bottom-2 left-2 flex items-center gap-4 text-[8px] uppercase tracking-[0.12em] text-slate-400">
-                              <div className="flex items-center gap-1.5">
-                                <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm" />
-                                <span>Worker (safe)</span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <div className="h-2 w-2 rounded-full bg-red-400 shadow-sm" />
-                                <span>SOS active (6)</span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-sm" />
-                                <span>Rover</span>
-                              </div>
-                            </div>
-                          </div>
+                          <MineMap
+                            mapData={mapData}
+                            personnelData={personnelData}
+                            dashboardMode
+                            dashboardPeople={dashboardPeople}
+                            onPersonSos={handleDashboardPersonSos}
+                          />
                         </div>
 
                         <div className="industrial-glow rounded-2xl border border-slate-800 bg-slate-900/80 p-3.5">

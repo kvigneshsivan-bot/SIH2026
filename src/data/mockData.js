@@ -30,6 +30,8 @@ export const mockMineMap = {
   safeZones: []
 };
 
+export const mockPersonnelData = [];
+
 export const mockCameraFeeds = [
   { id: 1, name: 'Front Camera', active: false, status: 'OFFLINE', streamUrl: null },
   { id: 2, name: '360° Pan-Tilt', active: false, status: 'OFFLINE', streamUrl: null },
@@ -93,6 +95,7 @@ export default {
   mockSystemStatus,
   mockSensorData,
   mockMineMap,
+  mockPersonnelData,
   mockCameraFeeds,
   mockAIDetection,
   mockHazards,
